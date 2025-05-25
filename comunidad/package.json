@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.14.1",
+    "nodejs": "^0.0.0",
+    "springboot": "^0.1.0"
+  }
+}
