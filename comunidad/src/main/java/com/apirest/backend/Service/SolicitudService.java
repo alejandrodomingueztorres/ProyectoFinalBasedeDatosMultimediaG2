@@ -1,11 +1,12 @@
 package com.apirest.backend.Service;
 
-import com.apirest.backend.Model.SolicitudModel;
-import com.apirest.backend.Repository.SolicitudRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.apirest.backend.Model.SolicitudModel;
+import com.apirest.backend.Repository.SolicitudRepository;
 
 @Service
 public class SolicitudService {
