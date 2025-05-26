@@ -1,31 +1,20 @@
 package com.apirest.backend.Model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 @Entity
 @Table(name = "ComentarioRespuesta")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class ComentarioRespuestaModel {
     
     @Id
@@ -41,26 +30,105 @@ public class ComentarioRespuestaModel {
     @Column(nullable = false)
     private String archivo;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date fechaRealizacion;
+    private LocalDate fechaRealizacion;
 
-    // relacion con usuario
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idUsuario", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
     private UsuarioModel usuario;
 
-    // esta parte permite que un comentario sea respuesta de otro comentario
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idComentarioRespuesta", insertable = false, updatable = false)
+    //permite que un comentario sea respuesta de otro comentario
+    @ManyToOne
+    @JoinColumn(name = "idComentarioRespuesta", referencedColumnName = "idComentarioRespuesta")
     private ComentarioRespuestaModel comentarioRespuesta;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EstadoArchivo archivo2;
 
-    // enum para controlar el estado del archivo, deja activar/desactivar archivos sin eliminarlos
+    //permite activar/desactivar archivos sin eliminarlos
     public enum EstadoArchivo {
         Activo, Inactivo
+    }
+
+    //CONSTRUCTORES
+    public ComentarioRespuestaModel() {}
+
+    public ComentarioRespuestaModel(Integer idComentarioRespuesta, String justificacion, String calificacion,
+                                   String archivo, LocalDate fechaRealizacion, UsuarioModel usuario,
+                                   ComentarioRespuestaModel comentarioRespuesta, EstadoArchivo archivo2) {
+        this.idComentarioRespuesta = idComentarioRespuesta;
+        this.justificacion = justificacion;
+        this.calificacion = calificacion;
+        this.archivo = archivo;
+        this.fechaRealizacion = fechaRealizacion;
+        this.usuario = usuario;
+        this.comentarioRespuesta = comentarioRespuesta;
+        this.archivo2 = archivo2;
+    }
+
+    //GETTERS Y SETTERS
+    public Integer getIdComentarioRespuesta() {
+        return idComentarioRespuesta;
+    }
+
+    public void setIdComentarioRespuesta(Integer idComentarioRespuesta) {
+        this.idComentarioRespuesta = idComentarioRespuesta;
+    }
+
+    public String getJustificacion() {
+        return justificacion;
+    }
+
+    public void setJustificacion(String justificacion) {
+        this.justificacion = justificacion;
+    }
+
+    public String getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(String calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    public String getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(String archivo) {
+        this.archivo = archivo;
+    }
+
+    public LocalDate getFechaRealizacion() {
+        return fechaRealizacion;
+    }
+
+    public void setFechaRealizacion(LocalDate fechaRealizacion) {
+        this.fechaRealizacion = fechaRealizacion;
+    }
+
+    public UsuarioModel getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioModel usuario) {
+        this.usuario = usuario;
+    }
+
+    public ComentarioRespuestaModel getComentarioRespuesta() {
+        return comentarioRespuesta;
+    }
+
+    public void setComentarioRespuesta(ComentarioRespuestaModel comentarioRespuesta) {
+        this.comentarioRespuesta = comentarioRespuesta;
+    }
+
+    public EstadoArchivo getArchivo2() {
+        return archivo2;
+    }
+
+    public void setArchivo2(EstadoArchivo archivo2) {
+        this.archivo2 = archivo2;
     }
 }
