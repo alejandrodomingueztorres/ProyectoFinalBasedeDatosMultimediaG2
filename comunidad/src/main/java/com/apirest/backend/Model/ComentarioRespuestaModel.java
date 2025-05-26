@@ -1,6 +1,6 @@
 package com.apirest.backend.Model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,53 +21,56 @@ public class ComentarioRespuestaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idComentarioRespuesta;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(columnDefinition = "TEXT")
     private String justificacion;
 
-    @Column(columnDefinition = "TEXT")
-    private String calificacion;
+    @Column
+    private Integer calificacion;
 
-    @Column(nullable = false)
+    @Column
     private String archivo;
 
     @Column(nullable = false)
-    private LocalDate fechaRealizacion;
+    private LocalDateTime fechaRealizacion;
+
+    @ManyToOne
+    @JoinColumn(name = "idSolicitud", nullable = false)
+    private SolicitudModel solicitud;
 
     @ManyToOne
     @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
     private UsuarioModel usuario;
 
-    //permite que un comentario sea respuesta de otro comentario
     @ManyToOne
-    @JoinColumn(name = "idComentarioRespuesta", referencedColumnName = "idComentarioRespuesta")
-    private ComentarioRespuestaModel comentarioRespuesta;
+    @JoinColumn(name = "idComentarioPadre", referencedColumnName = "idComentarioRespuesta")
+    private ComentarioRespuestaModel comentarioPadre;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private EstadoArchivo archivo2;
-
-    //permite activar/desactivar archivos sin eliminarlos
     public enum EstadoArchivo {
         Activo, Inactivo
     }
 
-    //CONSTRUCTORES
+    @Enumerated(EnumType.STRING)
+    private EstadoArchivo estadoArchivo;
+
+    // CONSTRUCTORES
     public ComentarioRespuestaModel() {}
 
-    public ComentarioRespuestaModel(Integer idComentarioRespuesta, String justificacion, String calificacion,
-                                   String archivo, LocalDate fechaRealizacion, UsuarioModel usuario,
-                                   ComentarioRespuestaModel comentarioRespuesta, EstadoArchivo archivo2) {
+    public ComentarioRespuestaModel(Integer idComentarioRespuesta, String justificacion, Integer calificacion,
+                                    String archivo, LocalDateTime fechaRealizacion, SolicitudModel solicitud,
+                                    UsuarioModel usuario, ComentarioRespuestaModel comentarioPadre,
+                                    EstadoArchivo estadoArchivo) {
         this.idComentarioRespuesta = idComentarioRespuesta;
         this.justificacion = justificacion;
         this.calificacion = calificacion;
         this.archivo = archivo;
         this.fechaRealizacion = fechaRealizacion;
+        this.solicitud = solicitud;
         this.usuario = usuario;
-        this.comentarioRespuesta = comentarioRespuesta;
-        this.archivo2 = archivo2;
+        this.comentarioPadre = comentarioPadre;
+        this.estadoArchivo = estadoArchivo;
     }
 
-    //GETTERS Y SETTERS
+    // GETTERS Y SETTERS
     public Integer getIdComentarioRespuesta() {
         return idComentarioRespuesta;
     }
@@ -84,11 +87,11 @@ public class ComentarioRespuestaModel {
         this.justificacion = justificacion;
     }
 
-    public String getCalificacion() {
+    public Integer getCalificacion() {
         return calificacion;
     }
 
-    public void setCalificacion(String calificacion) {
+    public void setCalificacion(Integer calificacion) {
         this.calificacion = calificacion;
     }
 
@@ -100,12 +103,20 @@ public class ComentarioRespuestaModel {
         this.archivo = archivo;
     }
 
-    public LocalDate getFechaRealizacion() {
+    public LocalDateTime getFechaRealizacion() {
         return fechaRealizacion;
     }
 
-    public void setFechaRealizacion(LocalDate fechaRealizacion) {
+    public void setFechaRealizacion(LocalDateTime fechaRealizacion) {
         this.fechaRealizacion = fechaRealizacion;
+    }
+
+    public SolicitudModel getSolicitud() {
+        return solicitud;
+    }
+
+    public void setSolicitud(SolicitudModel solicitud) {
+        this.solicitud = solicitud;
     }
 
     public UsuarioModel getUsuario() {
@@ -116,19 +127,19 @@ public class ComentarioRespuestaModel {
         this.usuario = usuario;
     }
 
-    public ComentarioRespuestaModel getComentarioRespuesta() {
-        return comentarioRespuesta;
+    public ComentarioRespuestaModel getComentarioPadre() {
+        return comentarioPadre;
     }
 
-    public void setComentarioRespuesta(ComentarioRespuestaModel comentarioRespuesta) {
-        this.comentarioRespuesta = comentarioRespuesta;
+    public void setComentarioPadre(ComentarioRespuestaModel comentarioPadre) {
+        this.comentarioPadre = comentarioPadre;
     }
 
-    public EstadoArchivo getArchivo2() {
-        return archivo2;
+    public EstadoArchivo getEstadoArchivo() {
+        return estadoArchivo;
     }
 
-    public void setArchivo2(EstadoArchivo archivo2) {
-        this.archivo2 = archivo2;
+    public void setEstadoArchivo(EstadoArchivo estadoArchivo) {
+        this.estadoArchivo = estadoArchivo;
     }
 }

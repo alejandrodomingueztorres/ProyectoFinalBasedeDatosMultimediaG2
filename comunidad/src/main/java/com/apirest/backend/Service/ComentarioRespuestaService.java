@@ -1,8 +1,9 @@
-package com.apirest.backend.Service; 
+package com.apirest.backend.Service;
 
 import com.apirest.backend.Model.ComentarioRespuestaModel;
 import com.apirest.backend.Repository.ComentarioRespuestaRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -32,11 +33,11 @@ public class ComentarioRespuestaService {
     }
     
     public List<ComentarioRespuestaModel> obtenerRespuestasDeComentario(Integer idComentarioPadre) {
-        return comentarioRespuestaRepository.findByComentarioRespuestaIdComentarioRespuesta(idComentarioPadre);
+        return comentarioRespuestaRepository.findByComentarioPadreIdComentarioRespuesta(idComentarioPadre);
     }
     
     public List<ComentarioRespuestaModel> obtenerComentariosPrincipales() {
-        return comentarioRespuestaRepository.findByComentarioRespuestaIsNull();
+        return comentarioRespuestaRepository.findByComentarioPadreIsNull();
     }
     
     public ComentarioRespuestaModel actualizarComentario(Integer id, ComentarioRespuestaModel nuevoComentario) {
@@ -46,12 +47,15 @@ public class ComentarioRespuestaService {
             comentario.setArchivo(nuevoComentario.getArchivo());
             comentario.setFechaRealizacion(nuevoComentario.getFechaRealizacion());
             comentario.setUsuario(nuevoComentario.getUsuario());
-            comentario.setComentarioRespuesta(nuevoComentario.getComentarioRespuesta());
-            comentario.setArchivo2(nuevoComentario.getArchivo2());
+            comentario.setComentarioPadre(nuevoComentario.getComentarioPadre());
+            comentario.setEstadoArchivo(nuevoComentario.getEstadoArchivo());
+            comentario.setSolicitud(nuevoComentario.getSolicitud());
             return comentarioRespuestaRepository.save(comentario);
         }).orElseThrow(() -> new RuntimeException("Comentario no encontrado"));
     }
     
     public void eliminarComentario(Integer id) {
-        comentarioRespuestaRepository.deleteById(id);}
+        comentarioRespuestaRepository.deleteById(id);
+    }
 }
+
